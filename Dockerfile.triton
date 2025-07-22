@@ -1,0 +1,15 @@
+FROM nvcr.io/nvidia/tritonserver:23.12-py3
+
+# Copia los modelos ONNX y sus configs al repositorio de modelos
+COPY triton/models /models
+
+# Triton expone estos puertos por defecto:
+# 8000: HTTP/REST API
+# 8001: gRPC
+# 8002: Metrics Prometheus
+EXPOSE 8000 8001 8002
+
+# Inicia el servidor Triton con el repositorio montado
+CMD ["tritonserver", "--model-repository=/models"]
+# Configura el servidor Triton para que use el repositorio de modelos
+# y exponga los puertos necesarios para la comunicación.
